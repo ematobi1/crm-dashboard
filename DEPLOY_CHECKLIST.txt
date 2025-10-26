@@ -1,0 +1,199 @@
+═══════════════════════════════════════════════════════════════
+  LEADSTREAM CRM - DEPLOYMENT CHECKLIST
+═══════════════════════════════════════════════════════════════
+
+Follow this checklist to deploy your CRM in 30 minutes!
+
+───────────────────────────────────────────────────────────────
+STEP 1: SETUP DATABASES (10 min)
+───────────────────────────────────────────────────────────────
+
+MongoDB Atlas (Free):
+☐ Sign up at https://www.mongodb.com/cloud/atlas/register
+☐ Create FREE M0 cluster
+☐ Create database user (leadstream-admin + strong password)
+☐ Whitelist all IPs (0.0.0.0/0)
+☐ Copy connection string:
+   mongodb+srv://leadstream-admin:PASSWORD@cluster.mongodb.net/leadstream
+☐ SAVE CONNECTION STRING! →
+
+Upstash Redis (Free):
+☐ Sign up at https://upstash.com/
+☐ Create Redis database (Regional)
+☐ Copy Redis URL:
+   redis://default:xxxxx@region.upstash.io:6379
+☐ SAVE REDIS URL! →
+
+───────────────────────────────────────────────────────────────
+STEP 2: PUSH TO GITHUB (5 min)
+───────────────────────────────────────────────────────────────
+
+☐ Create new repo on GitHub: leadstream-crm
+☐ Run these commands in project root:
+
+   git init
+   git add .
+   git commit -m "Initial commit - LeadStream CRM"
+   git remote add origin https://github.com/YOUR_USERNAME/leadstream-crm.git
+   git branch -M main
+   git push -u origin main
+
+☐ Verify code is on GitHub
+
+───────────────────────────────────────────────────────────────
+STEP 3: DEPLOY BACKEND TO RENDER (10 min)
+───────────────────────────────────────────────────────────────
+
+☐ Sign up at https://render.com/ (use GitHub)
+☐ Click "New +" → "Web Service"
+☐ Connect your GitHub repo
+☐ Configure:
+   Name: leadstream-backend
+   Root Directory: backend
+   Environment: Node
+   Build Command: npm install
+   Start Command: npm start
+   Instance Type: Free
+
+☐ Add Environment Variables (click Advanced):
+   MONGODB_URI = [paste MongoDB connection string]
+   REDIS_URL = [paste Upstash Redis URL]
+   JWT_SECRET = [generate random 32+ char string]
+   FRONTEND_URL = https://leadstream-crm.netlify.app
+   NODE_ENV = production
+   PORT = 5001
+
+☐ Click "Create Web Service"
+☐ Wait 5-10 minutes for deployment
+☐ Copy your backend URL: https://leadstream-backend.onrender.com
+☐ Test: curl https://leadstream-backend.onrender.com/api/health
+
+───────────────────────────────────────────────────────────────
+STEP 4: DEPLOY FRONTEND TO NETLIFY (5 min)
+───────────────────────────────────────────────────────────────
+
+Option A - CLI (Recommended):
+☐ Run: npm install -g netlify-cli
+☐ Run: netlify login
+☐ Run: cd frontend
+☐ Run: netlify deploy --prod
+☐ Follow prompts, use site name: leadstream-crm
+☐ Copy your site URL: https://leadstream-crm.netlify.app
+
+Option B - Dashboard:
+☐ Sign up at https://app.netlify.com/
+☐ "New site from Git" → GitHub → your repo
+☐ Configure:
+   Branch: main
+   Base directory: frontend
+   Build command: npm run build
+   Publish directory: frontend/build
+☐ Add Environment Variable:
+   REACT_APP_API_URL = https://leadstream-backend.onrender.com/api
+☐ Deploy site
+☐ Copy your site URL: https://YOUR_SITE.netlify.app
+
+───────────────────────────────────────────────────────────────
+STEP 5: CONNECT EVERYTHING (5 min)
+───────────────────────────────────────────────────────────────
+
+Update Backend CORS:
+☐ Go to Render dashboard
+☐ Click leadstream-backend → Environment
+☐ Update FRONTEND_URL to your actual Netlify URL
+☐ Save (service will auto-redeploy)
+
+Create Admin User (Choose One):
+
+Method 1 - Via MongoDB Atlas:
+☐ Go to MongoDB Atlas → Browse Collections
+☐ Database: leadstream → Collection: users
+☐ Insert Document:
+   {
+     "name": "Admin User",
+     "email": "admin@leadstream.com",
+     "password": "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5aeGK3eqJ7JfW",
+     "role": "admin",
+     "isActive": true,
+     "createdAt": {"$date": "2025-10-26T00:00:00.000Z"}
+   }
+   (Password is: admin123)
+
+Method 2 - Via Frontend:
+☐ Go to your Netlify URL
+☐ Click "Register"
+☐ Create account with role: Admin
+
+───────────────────────────────────────────────────────────────
+STEP 6: TEST EVERYTHING (5 min)
+───────────────────────────────────────────────────────────────
+
+☐ Open Netlify URL in browser
+☐ Login with admin credentials
+☐ Dashboard loads successfully
+☐ Create a test lead
+☐ Click AI Chat button (bottom-right)
+☐ Ask: "How do I create a lead?"
+☐ AI responds correctly
+☐ Go to Pipeline page
+☐ Drag-drop a deal
+☐ Go to Tasks page
+☐ Create a task
+☐ Check notifications (bell icon)
+☐ All features work!
+
+───────────────────────────────────────────────────────────────
+OPTIONAL: KEEP BACKEND AWAKE (Free)
+───────────────────────────────────────────────────────────────
+
+Render free tier sleeps after 15 min. Use UptimeRobot:
+☐ Sign up at https://uptimerobot.com/
+☐ Add monitor:
+   Type: HTTP(s)
+   URL: https://leadstream-backend.onrender.com/api/health
+   Interval: 5 minutes
+☐ This pings backend every 5 min to keep it awake!
+
+───────────────────────────────────────────────────────────────
+SECURITY CHECKLIST
+───────────────────────────────────────────────────────────────
+
+☐ Change default admin password after first login
+☐ JWT_SECRET is strong random string (32+ chars)
+☐ All environment variables set correctly
+☐ HTTPS enabled on all URLs
+☐ MongoDB IP whitelist includes 0.0.0.0/0
+☐ 2FA enabled on GitHub, Netlify, Render accounts
+
+───────────────────────────────────────────────────────────────
+YOU'RE LIVE! 🎉
+───────────────────────────────────────────────────────────────
+
+Your URLs:
+Frontend: https://YOUR_SITE.netlify.app
+Backend: https://leadstream-backend.onrender.com
+
+Share with your team:
+"LeadStream CRM is live! Visit [YOUR_URL] to get started!"
+
+───────────────────────────────────────────────────────────────
+NEXT STEPS
+───────────────────────────────────────────────────────────────
+
+☐ Customize branding
+☐ Add team members
+☐ Import existing leads
+☐ Configure email notifications
+☐ Train team on features
+☐ Gather feedback
+☐ Consider upgrading to paid tiers for production use
+
+───────────────────────────────────────────────────────────────
+
+Need help? Read:
+- QUICK_DEPLOY.md - Detailed guide
+- DEPLOYMENT_GUIDE.md - Comprehensive instructions
+- MVP_READINESS_GUIDE.md - Feature overview
+- AI_CHAT_GUIDE.md - Chat system docs
+
+Built with ❤️ by Kingdom (Emmanuel Tobi)

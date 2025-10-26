@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(findstr:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "WebFetch(domain:dashing-kashata-1b98f8.netlify.app)"
     ],
     "deny": [],
     "ask": []

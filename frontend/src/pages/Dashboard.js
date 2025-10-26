@@ -1,3 +1,4 @@
+import { API_URL } from '../config';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
@@ -11,7 +12,7 @@ import {
 
 const fetchDashboardData = async () => {
   const token = localStorage.getItem('token');
-  const response = await fetch('http://localhost:5001/api/leads/analytics/dashboard', {
+  const response = await fetch('${API_URL}/leads/analytics/dashboard', {
     headers: {
       'Authorization': `Bearer ${token}`
     }
@@ -38,8 +39,8 @@ const fetchDashboardData = async () => {
 const fetchRecentLeads = async (searchQuery = '') => {
   const token = localStorage.getItem('token');
   const url = searchQuery
-    ? `http://localhost:5001/api/leads?search=${encodeURIComponent(searchQuery)}&limit=10&sortBy=createdAt&sortOrder=desc`
-    : 'http://localhost:5001/api/leads?limit=10&sortBy=createdAt&sortOrder=desc';
+    ? `${API_URL}/leads?search=${encodeURIComponent(searchQuery)}&limit=10&sortBy=createdAt&sortOrder=desc`
+    : '${API_URL}/leads?limit=10&sortBy=createdAt&sortOrder=desc';
 
   const response = await fetch(url, {
     headers: {
@@ -57,7 +58,7 @@ const fetchRecentLeads = async (searchQuery = '') => {
 
 const fetchLeadDetail = async (leadId) => {
   const token = localStorage.getItem('token');
-  const response = await fetch(`http://localhost:5001/api/leads/${leadId}`, {
+  const response = await fetch(`${API_URL}/leads/${leadId}`, {
     headers: {
       'Authorization': `Bearer ${token}`
     }
@@ -72,7 +73,7 @@ const fetchLeadDetail = async (leadId) => {
 
 const fetchNextLead = async () => {
   const token = localStorage.getItem('token');
-  const response = await fetch('http://localhost:5001/api/leads/next-lead', {
+  const response = await fetch('${API_URL}/leads/next-lead', {
     headers: {
       'Authorization': `Bearer ${token}`
     }
@@ -162,7 +163,7 @@ export default function Dashboard() {
         `Call Next Lead:\n\nName: ${nextLead.name}\nCompany: ${nextLead.company || 'N/A'}\nPhone: ${nextLead.phone || 'N/A'}\nEmail: ${nextLead.email}\n\nClick OK to mark as contacted`
       )) {
         const token = localStorage.getItem('token');
-        await fetch(`http://localhost:5001/api/leads/${nextLead._id}`, {
+        await fetch(`${API_URL}/leads/${nextLead._id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -186,7 +187,7 @@ export default function Dashboard() {
     setIsSendingEmail(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/leads/send-followup', {
+      const response = await fetch('${API_URL}/leads/send-followup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

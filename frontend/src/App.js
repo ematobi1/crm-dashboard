@@ -13,6 +13,7 @@ import Pipeline from './pages/Pipeline';
 import Tasks from './pages/Tasks';
 import Analytics from './pages/Analytics';
 import Settings from './pages/Settings';
+import { API_URL } from './config';
 import './App.css';
 
 const queryClient = new QueryClient({
@@ -46,7 +47,7 @@ function AuthProvider({ children }) {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        const response = await fetch('http://localhost:5001/api/auth/me', {
+        const response = await fetch(`${API_URL}/auth/me`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -66,7 +67,7 @@ function AuthProvider({ children }) {
   };
 
   const login = async (email, password) => {
-    const response = await fetch('http://localhost:5001/api/auth/login', {
+    const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -84,7 +85,7 @@ function AuthProvider({ children }) {
   };
 
   const register = async (name, email, password, role = 'sales_rep') => {
-    const response = await fetch('http://localhost:5001/api/auth/register', {
+    const response = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password, role }),

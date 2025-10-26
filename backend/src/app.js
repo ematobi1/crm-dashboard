@@ -104,7 +104,7 @@ app.get('/api/health', (req, res) => {
 app.use(errorHandler);
 
 // --- SERVER STARTUP ---
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 server.listen(PORT, '0.0.0.0', () => {
   logger.info(`🚀 Server running at http://localhost:${PORT}`);
   logger.info(`🌐 Accepting requests from: ${allowedOrigin}`);

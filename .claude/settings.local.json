@@ -1,18 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm start)",
-      "Bash(taskkill:*)",
-      "Bash(node:*)",
-      "Bash(netstat:*)",
-      "Bash(findstr :5001)",
-      "Bash(docker-compose:*)",
-      "Bash(curl:*)",
-      "Bash(npm install:*)",
-      "Bash(netlify login:*)",
-      "Bash(netlify deploy:*)",
-      "Bash(npm run build:*)",
-      "Bash(netlify sites:create:*)"
+      "Bash(findstr:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

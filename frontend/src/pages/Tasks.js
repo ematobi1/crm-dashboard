@@ -1,3 +1,4 @@
+import { API_URL } from '../config';
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
@@ -8,7 +9,7 @@ import {
   ChevronDown, X, Edit, Trash2, AlertCircle, Star, Zap
 } from 'lucide-react';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
+const API_URL = process.env.REACT_APP_API_URL || '${API_URL}';
 
 export default function Tasks() {
   const queryClient = useQueryClient();

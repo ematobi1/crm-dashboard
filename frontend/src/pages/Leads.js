@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
 import { useAuth } from '../App';
+import { API_URL } from '../config';
 
 const fetchLeads = async (filters = {}) => {
   const token = localStorage.getItem('token');
   const queryParams = new URLSearchParams(filters).toString();
-  const response = await fetch(`http://localhost:5001/api/leads?${queryParams}`, {
+  const response = await fetch(`${API_URL}/leads?${queryParams}`, {
     headers: {
       'Authorization': `Bearer ${token}`
     }
@@ -22,7 +23,7 @@ const fetchLeads = async (filters = {}) => {
 
 const createLead = async (leadData) => {
   const token = localStorage.getItem('token');
-  const response = await fetch('http://localhost:5001/api/leads', {
+  const response = await fetch(`${API_URL}/leads`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -41,7 +42,7 @@ const createLead = async (leadData) => {
 
 const updateLead = async ({ id, data }) => {
   const token = localStorage.getItem('token');
-  const response = await fetch(`http://localhost:5001/api/leads/${id}`, {
+  const response = await fetch(`${API_URL}/leads/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -60,7 +61,7 @@ const updateLead = async ({ id, data }) => {
 
 const deleteLead = async (id) => {
   const token = localStorage.getItem('token');
-  const response = await fetch(`http://localhost:5001/api/leads/${id}`, {
+  const response = await fetch(`${API_URL}/leads/${id}`, {
     method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${token}`
@@ -77,7 +78,7 @@ const deleteLead = async (id) => {
 
 const bulkDeleteLeads = async (leadIds) => {
   const token = localStorage.getItem('token');
-  const response = await fetch('http://localhost:5001/api/leads/bulk/delete', {
+  const response = await fetch(`${API_URL}/leads/bulk/delete`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -96,7 +97,7 @@ const bulkDeleteLeads = async (leadIds) => {
 
 const bulkUpdateLeads = async ({ leadIds, updates }) => {
   const token = localStorage.getItem('token');
-  const response = await fetch('http://localhost:5001/api/leads/bulk/update', {
+  const response = await fetch(`${API_URL}/leads/bulk/update`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

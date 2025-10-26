@@ -1,3 +1,4 @@
+import { API_URL } from '../config';
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
@@ -9,7 +10,7 @@ import {
 
 const fetchDeals = async () => {
   const token = localStorage.getItem('token');
-  const response = await fetch('http://localhost:5001/api/leads?status=proposal,negotiation,qualified', {
+  const response = await fetch('${API_URL}/leads?status=proposal,negotiation,qualified', {
     headers: { 'Authorization': `Bearer ${token}` }
   });
   if (!response.ok) throw new Error('Failed to fetch deals');
@@ -36,7 +37,7 @@ export default function Pipeline() {
   const updateDealStage = useMutation(
     async ({ dealId, stage }) => {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/leads/${dealId}`, {
+      const response = await fetch(`${API_URL}/leads/${dealId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -1,3 +1,4 @@
+import { API_URL } from '../config';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import Layout from '../components/Layout';
@@ -8,7 +9,7 @@ import {
 
 const fetchAnalytics = async (timeRange) => {
   const token = localStorage.getItem('token');
-  const response = await fetch(`http://localhost:5001/api/leads/analytics/dashboard?timeRange=${timeRange}`, {
+  const response = await fetch(`${API_URL}/leads/analytics/dashboard?timeRange=${timeRange}`, {
     headers: { 'Authorization': `Bearer ${token}` }
   });
   if (!response.ok) {

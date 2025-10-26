@@ -2,10 +2,9 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNotifications } from './NotificationContext';
 import toast from 'react-hot-toast';
+import { API_URL } from '../config';
 
 const ChatContext = createContext();
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
 
 export function useChat() {
   return useContext(ChatContext);

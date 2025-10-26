@@ -1,10 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import toast from 'react-hot-toast';
+import { SOCKET_URL } from '../config';
 
 const NotificationContext = createContext();
-
-const SOCKET_URL = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:5001';
 
 export function useNotifications() {
   return useContext(NotificationContext);
